@@ -24,6 +24,7 @@ public class AreaQueue extends Area {
 	
 	@Override
 	public synchronized void enter(Patient p) {
+		waitQueue.add(p);
 		while(this.numPatients == this.capacity) {
 			this.waiting++;
 			try {
@@ -33,7 +34,10 @@ public class AreaQueue extends Area {
 			}
 			this.waiting--;
 		} 
-		this.numPatients++;
-	
+		if(waitQueue.peek()==p) {
+			waitQueue.remove();
+			this.numPatients++;
+		}
+		
 	}
 }
